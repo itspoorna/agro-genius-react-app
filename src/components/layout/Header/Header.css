@@ -1,0 +1,12 @@
+.navbar-link-white {
+    color: white; 
+}
+
+.navbar-custom {
+    background-color: rgba(165, 218, 224, 0.7); 
+}
+
+.custom-border {
+    border: 2px solid #007bff; /* Replace with your preferred color (e.g., blue) */
+    border-radius: 2rem; /* Optional: Add rounded corners */
+}
