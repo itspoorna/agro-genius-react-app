@@ -8,13 +8,13 @@ const Cart = () => {
   const [cartData, setCartData] = useState();
   const [numberOfItems, setNumberOfItems] = useState();
   const [totalPrice, setTotal] = useState();
+  const [message, setMessage] = useState('');
   const [error, setError] = useState();
 
   const url = import.meta.env.VITE_AGRO_GENIUS_URL;
 
   const userId = 1;
 
-  
   const calculate = async () => {
     const cartItems = await cartData.cartIitems;
       const total = cartItems.reduce(
@@ -30,7 +30,7 @@ const Cart = () => {
     try {    
       
       const fetchData = async () =>{
-        const response = await fetch(`${url}/cart/user/${userId}`)
+        const response = await fetch(`${url}/cart/user/${userId}`);
         const data = await response.json();
         setCartData(data);
       }
@@ -44,13 +44,36 @@ const Cart = () => {
   
   calculate();
 
+  const handleOrder = (event) =>{
+    event.preventDefault();
+
+    try {
+        const placeOrder = async () =>{
+        const response = await fetch(`${url}/order/user/${userId}`, {
+                                method: "POST",
+                                headers: {
+                                  "Content-Type": "application/json",
+                                },
+                                body : JSON.stringify(order)
+                              });
+        const data = await response.json();
+        setMessage(data);
+      }
+      
+      placeOrder();
+      
+    } catch (error) {
+      setError(error);
+    }
+  }
+
   return (
     <>
       <section
-        className="h-100 h-custom"
+        className="vh-100 h-custom"
         style={{ backgroundColor: "rgb(214 226 220)" }}
       >
-        <div className="container py-5 h-100">
+        <div className="container py-5">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12">
               <div
@@ -130,6 +153,7 @@ const Cart = () => {
                           data-mdb-ripple-init
                           className="btn btn-dark btn-block btn-lg"
                           data-mdb-ripple-color="dark"
+                          onClick={handleOrder}
                         >
                           Buy Now
                         </button>

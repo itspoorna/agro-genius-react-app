@@ -1,19 +1,27 @@
 import React from "react";
 
-const OrderButton = ({ product }) => {
+const OrderButton = ({ data }) => {
 
-  const {id, price} = product;
+  const {quantity, price, productId} = data;
 
   const url = import.meta.env.VITE_AGRO_GENIUS_URL;
 
   const userId = 1;
 
-  const placeOrder = async (e) =>{
+  const placeOrder = async (event) =>{
+
+    event.preventDefault();
 
     const order = {
-      amount : price,
-      productIds : [id]
-    }
+      amount: price,
+      orderProducts:[
+          {
+            price: price,
+            quantity: quantity,
+            productId : productId
+          }
+        ]
+    };
 
     try {
       const response = await fetch(`${url}/order/user/${userId}`, {

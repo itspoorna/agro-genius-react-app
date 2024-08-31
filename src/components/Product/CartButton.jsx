@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 
-const CartButton = ({ id }) => {
+const CartButton = ({ data }) => {
+
   const [message, setMessage] = useState();
   const userId = 1;
 
   const url = import.meta.env.VITE_AGRO_GENIUS_URL;
 
-  const addToCart = async (e) => {
+  const addToCart = async (event) => {
+    event.preventDefault();
+    
     try {
-      const response = await fetch(`${url}/cart/user/${userId}/product/${id}`, {
-        method: "POST"
+      const response = await fetch(`${url}/cart/user/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
-      console.log(response);
+      const res = await response.json();
+      console.log(res);
       
     } catch (err) {
       console.log(err)

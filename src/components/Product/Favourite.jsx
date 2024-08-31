@@ -7,7 +7,7 @@ const Favourite = () => {
 
     const [heart, setHeart] = useState(emptyHeart);
 
-    const addFavourite = (e) =>{
+    const addFavourite = () =>{
         heart === emptyHeart ? setHeart(fillHeart) : setHeart(emptyHeart);
     }
 

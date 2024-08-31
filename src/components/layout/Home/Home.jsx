@@ -1,6 +1,8 @@
 import "./Home.css";
 
 const Home = () => {
+  
+
   return (
       <div className="home position-relative">
         <div className="position-absolute top-50 start-50 translate-middle">

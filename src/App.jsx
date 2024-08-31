@@ -9,23 +9,50 @@ import Products from "./components/Product/Products";
 import ForgotPassword from "./components/registration/ForgotPassword";
 import Cart from "./components/Cart/Cart";
 import Order from "./components/Order/Order";
+import CropModel from "./components/Crop/CropModel";
+import CropInputForm from "./components/Crop/CropInputForm";
+import AddProductForm from "./components/Product/AddProductForm";
+
+//KEYCLOAK
+import keycloak from "./keycloak";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
+import { useEffect } from "react";
+import PrivateRoute from "./routes/PrivateRoutes";
 
 const App = () => {
+  useEffect(() => {
+    if (window.opener) {
+      // send them to the opening window
+      window.focus();
+      window.opener.location.href = "/";
+      window.close();
+    }
+  }, []);
+
   return (
     <>
-    <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/product" element={<Products />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/user/cart" element={<Cart />} />
-          <Route path="/user/order" element={<Order />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-        </Routes>
-    </Layout>
+      <ReactKeycloakProvider authClient={keycloak}>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/product" element={<Products />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/crop" element={<CropInputForm />} />
+            <Route path="/crop-result" element={<CropModel />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+
+            <Route path="/user" element={<PrivateRoute />}>
+              <Route path="cart" element={<Cart />} />
+              <Route path="order" element={<Order />} />
+              <Route path="add-product" element={<AddProductForm />} />
+              <Route path="order" element={<Order />} />
+            </Route>
+          </Routes>
+        </Layout>
+      </ReactKeycloakProvider>
     </>
   );
 };

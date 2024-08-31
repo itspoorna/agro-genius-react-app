@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <>
@@ -12,30 +14,30 @@ const Footer = () => {
           {/* Left */}
           {/* Right */}
           <div>
-            <a href="#" aria-label="Facebook" className="me-4 text-reset">
+            <Link to="#" aria-label="Facebook" className="me-4 text-reset">
               <i className="fab fa-facebook-f" />
-            </a>
-            <a href="#" aria-label="Twitter" className="me-4 text-reset">
+            </Link>
+            <Link to="#" aria-label="Twitter" className="me-4 text-reset">
               <i className="fab fa-twitter" />
-            </a>
-            <a href="#" aria-label="Google" className="me-4 text-reset">
+            </Link>
+            <Link to="#" aria-label="Google" className="me-4 text-reset">
               <i className="fab fa-google" />
-            </a>
-            <a href="#" aria-label="Instagram" className="me-4 text-reset">
+            </Link>
+            <Link to="#" aria-label="Instagram" className="me-4 text-reset">
               <i className="fab fa-instagram" />
-            </a>
-            <a href="#" aria-label="Linked-in" className="me-4 text-reset">
+            </Link>
+            <Link to="#" aria-label="Linked-in" className="me-4 text-reset">
               <i className="fab fa-linkedin" />
-            </a>
-            <a href="#" aria-label="Github" className="me-4 text-reset">
+            </Link>
+            <Link to="#" aria-label="Github" className="me-4 text-reset">
               <i className="fab fa-github" />
-            </a>
+            </Link>
           </div>
           {/* Right */}
         </section>
         {/* Section: Social media */}
         {/* Section: Links  */}
-        <section className>
+        <section>
           <div className="container text-center text-md-start mt-5">
             {/* Grid row */}
             <div className="row mt-3">
@@ -58,24 +60,24 @@ const Footer = () => {
                 {/* Links */}
                 <h6 className="text-uppercase fw-bold mb-4">Products</h6>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Fertilizers
-                  </a>
+                  </Link>
                 </p>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Seeds
-                  </a>
+                  </Link>
                 </p>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Plants
-                  </a>
+                  </Link>
                 </p>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Pesticides
-                  </a>
+                  </Link>
                 </p>
               </div>
               {/* Grid column */}
@@ -84,24 +86,24 @@ const Footer = () => {
                 {/* Links */}
                 <h6 className="text-uppercase fw-bold mb-4">Useful links</h6>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Pricing
-                  </a>
+                  </Link>
                 </p>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Settings
-                  </a>
+                  </Link>
                 </p>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Orders
-                  </a>
+                  </Link>
                 </p>
                 <p>
-                  <a href="#" className="text-reset">
+                  <Link to="#" className="text-reset">
                     Help
-                  </a>
+                  </Link>
                 </p>
               </div>
               {/* Grid column */}
@@ -135,9 +137,9 @@ const Footer = () => {
           style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
         >
           © 2021 Copyright:
-          <a className="text-reset fw-bold" href="https://mdbootstrap.com/">
+          <Link className="text-reset fw-bold" to="https://mdbootstrap.com/">
             MDBootstrap.com
-          </a>
+          </Link>
         </div>
         {/* Copyright */}
       </footer>

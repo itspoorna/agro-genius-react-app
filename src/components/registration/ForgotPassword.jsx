@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
   return (
-    <div className="container ">
+    <div className="container vh-100">
       <div className="row">
-        <div className="col m-5">
+        <div className="col mt-5">
           <div className="card text-center m-auto" style={{ width: 300 }}>
             <div className="card-header h5 text-white bg-primary">
               Password Reset

@@ -18,16 +18,16 @@ const Products = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container vh-100">
       <div className="row">
-        <div className="col-md-3 col-sm-12 my-3 ">
           {error && <h4>{error}</h4>}
           {!products && !error && <ProductLoading />}
           {products &&
             products.map((product) => (
-              <Item key={product.id} product={product} />
+              <div key={product.id} className="col-md-3 col-sm-12 my-3 ">
+                <Item product={product} />
+             </div>
             ))}
-        </div>
       </div>
     </div>
   );

@@ -54,8 +54,8 @@ const Order = () => {
   // console.log(orderData[0].orderProducts);
 
   return (
-    <section className="h-100 gradient-custom">
-      <div className="container py-5 h-100">
+    <section className="vh-100 gradient-custom">
+      <div className="container py-5">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-lg-10 col-xl-8">
             <div className="card" style={{ borderRadius: 10 }}>

@@ -21,6 +21,15 @@ const Signup = () => {
 
   const states = ["Karnataka", "Andra"];
 
+  //Google sign in'
+  const signInWithGoogle = () =>{
+    window.open(
+      "http://localhost:8080/realms/AGROGENIUS/protocol/openid-connect/auth?response_type=code&client_id=AGFE&kc_idp_hint=google",
+      "google login",
+      "toolbar=no, menubar=no, width=700, height=700, top=100, left=300"
+      );
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,7 +43,7 @@ const Signup = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify(user),
       });
 
       if (response) {
@@ -54,15 +63,15 @@ const Signup = () => {
       <div
         className="container-fluid "
         style={{
-          background: "url(login.jpg)",
+          background: "url(login2.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
       >
         <div className="row p-4">
-          <div className="col-md-5 offset-md-3">
+          <div className="col-md-6 offset-md-3">
             <form
-              className="row g-2 rounded-4 bg-light"
+              className="row g-1 rounded-4 bg-light"
               onSubmit={(e) => handleSubmit(e)}
             >
               <h2 className="text-center mt-3">Registration Form</h2>
@@ -207,7 +216,7 @@ const Signup = () => {
               <div className="col-md-10 offset-md-1">
                 <div className="d-grid mb-4">
                   <button
-                    className="btn btn-primary btn-lg w-100"
+                    className="btn btn-primary btn-md w-100"
                     type="submit"
                     onClick={() => handleSubmit}
                   >
@@ -215,26 +224,33 @@ const Signup = () => {
                   </button>
                 </div>
               </div>
-              <hr className="my-4" />
+              <hr className="" />
               {/* Full-width buttons */}
-              <div className="d-grid mb-2">
-                <button
-                  className="btn btn-lg w-100"
-                  style={{ backgroundColor: "#dd4b39" }}
-                  type="submit"
-                >
-                  <i className="fab fa-google me-2" /> Sign in with Google
-                </button>
-              </div>
-              <div className="d-grid">
-                <button
-                  className="btn btn-lg w-100"
-                  style={{ backgroundColor: "#3b5998" }}
-                  type="submit"
-                  onClick={() => console.log("Facebook")}
-                >
-                  <i className="fab fa-facebook-f me-2" /> Sign in with Facebook
-                </button>
+              <div className="row my-2">
+                <div className="col">
+                  <div className="d-grid">
+                    <button
+                      className="btn btn-md w-100 ms-auto"
+                      style={{ backgroundColor: "#dd4b39" }}
+                      onClick={signInWithGoogle}
+                    >
+                      <i className="fab fa-google me-2" /> Sign in with Google
+                    </button>
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="d-grid">
+                    <button
+                      className="btn btn-md w-100"
+                      style={{ backgroundColor: "#3b5998" }}
+                      type="submit"
+                      onClick={() => console.log("Facebook")}
+                    >
+                      <i className="fab fa-facebook-f me-2" /> Sign in with
+                      Facebook
+                    </button>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
