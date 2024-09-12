@@ -1,45 +1,7 @@
 import { Link } from 'react-router-dom'
 import './Header.css'
-import { useKeycloak } from '@react-keycloak/web';
-import { useEffect, useState } from 'react';
 
 const Header = () => {
-    const { keycloak, initialized } = useKeycloak();
-    const [ profileUrl, setProfile ] = useState();
- 
-    const socailMediaSingup = (keycloakData) => {
-      console.log(keycloakData.tokenParsed.email);
-      console.log(keycloakData);
-
-      if(localStorage.getItem("token") === null){
-        localStorage.setItem("token", keycloakData.token);
-      }
-      
-      setProfile(keycloakData.tokenParsed.picture);
-    
-    }
-    useEffect(() => {
-      if (keycloak.authenticated) {
-        console.log("keycloak.authenticated", keycloak.authenticated);
-        socailMediaSingup(keycloak, (res) => {
-          if (res.data.status === 200) {
-            if (res.data.result.isDetailsAvailable) {
-                console.log("Ok");
-            //   // If details are available take the user to dashborad page
-            //   if (nonLoggedInUserData && nonLoggedInUserData.redirectUrl) {
-            //     history.push(nonLoggedInUserData.redirectUrl);
-            //   } else {
-            //     history.push("/homebuyer/explore");
-            //   }
-            } else {
-                console.log("Not Ok");
-              //If details are not available take the user to home buyer details page
-              //history.push("/homebuyerdetails");
-            }
-          }
-        });
-      }
-    }, [keycloak.authenticated]);
 
     return (
         <>
@@ -66,15 +28,15 @@ const Header = () => {
                             <li className="nav-item">
                                 <b><Link className="h1 navbar-link-white nav-link " aria-current="page" to="/contact">CONTACT</Link></b>
                             </li>
-                            {!keycloak.authenticated && <li className="nav-item">
+                            {<li className="nav-item">
                                 <b><Link className="h1 navbar-link-white nav-link " aria-current="page" to="/signin">SIGN IN</Link></b>
                             </li>}
-                            {keycloak.authenticated && <li className="nav-item">
+                            {/* { <li className="nav-item">
                                 <b><Link className="h1 navbar-link-white nav-link " aria-current="page"><img src={profileUrl} className="img-fluid rounded" alt="Profile" width={30}/></Link></b>
-                            </li>}
-                            {keycloak.authenticated && <li className="nav-item">
-                                <b><Link className="h1 navbar-link-white nav-link " aria-current="page" onClick={() => keycloak.logout()}> Log out</Link></b>
-                            </li>}
+                            </li>} */}
+                            {/* { <li className="nav-item">
+                                <b><Link className="h1 navbar-link-white nav-link " aria-current="page" > Log out</Link></b>
+                            </li>} */}
                         </ul>
                     </div>
                 </div>

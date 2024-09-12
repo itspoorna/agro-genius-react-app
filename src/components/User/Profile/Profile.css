@@ -1,0 +1,36 @@
+.tm-content-row {
+    justify-content: space-between;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+
+  .tm-avatar {
+    width: 345px;
+  }
+  .tm-avatar-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .tm-avatar-delete-link {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    z-index: 1000;
+    padding: 14px;
+    border-radius: 50%;
+    background-color: rgba(57, 78, 100, 0.7);
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    display: none;
+    transition: all 0.2s ease;
+  }
+  .tm-avatar-container:hover .tm-avatar-delete-link {
+    display: block;
+  }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,7 +9,6 @@ const Signin = ({ path }) => {
 
   const [user, setUser] = useState({
     emailId: "",
-    phoneNumber: "",
     password: "",
   });
 
@@ -37,7 +37,37 @@ const handleGoogleSignIn = () => {
     }
   };
 
-const handleSubmit = () => navigate(path);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUser((prevUser) => ({ ...prevUser, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(user);
+    try {
+      delete axios.defaults.headers.common["Authorization"];
+      const response = await axios.post("http://localhost:8081/api/v1/user/signIn", user,{
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response) {
+        localStorage.setItem("token", response.data);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
+        console.log(axios.defaults.headers.common["Authorization"]);
+        // const token = response.config.headers.Authorization;
+        // console.log(token);
+      } else {
+        alert("error in registration: ");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // setResponseMessage('Error occurred while creating user');
+    }
+  };
+
   return (
     <section
       className="vh-100"
@@ -60,6 +90,7 @@ const handleSubmit = () => navigate(path);
                     value={user.emailId}
                     className="form-control form-control-md"
                     placeholder="Email"
+                    name="emailId"
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -67,6 +98,7 @@ const handleSubmit = () => navigate(path);
                   <input
                     type="password"
                     id="typePasswordX-2"
+                    name="password"
                     value={user.password}
                     className="form-control form-control-md"
                     placeholder="Password"
@@ -82,7 +114,7 @@ const handleSubmit = () => navigate(path);
                   <button
                     className="btn btn-primary btn-md w-100"
                     type="submit"
-                    onClick={() => handleSubmit}
+                    onClick={(event) => handleSubmit(event)}
                   >
                     Login
                   </button>

@@ -5,37 +5,6 @@ const Footer = () => {
     <>
       {/* Footer */}
       <footer className="text-center text-lg-start bg-body-tertiary text-muted">
-        {/* Section: Social media */}
-        <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-          {/* Left */}
-          <div className="me-5 d-none d-lg-block">
-            <span>Get connected with us on social networks:</span>
-          </div>
-          {/* Left */}
-          {/* Right */}
-          <div>
-            <Link to="#" aria-label="Facebook" className="me-4 text-reset">
-              <i className="fab fa-facebook-f" />
-            </Link>
-            <Link to="#" aria-label="Twitter" className="me-4 text-reset">
-              <i className="fab fa-twitter" />
-            </Link>
-            <Link to="#" aria-label="Google" className="me-4 text-reset">
-              <i className="fab fa-google" />
-            </Link>
-            <Link to="#" aria-label="Instagram" className="me-4 text-reset">
-              <i className="fab fa-instagram" />
-            </Link>
-            <Link to="#" aria-label="Linked-in" className="me-4 text-reset">
-              <i className="fab fa-linkedin" />
-            </Link>
-            <Link to="#" aria-label="Github" className="me-4 text-reset">
-              <i className="fab fa-github" />
-            </Link>
-          </div>
-          {/* Right */}
-        </section>
-        {/* Section: Social media */}
         {/* Section: Links  */}
         <section>
           <div className="container text-center text-md-start mt-5">

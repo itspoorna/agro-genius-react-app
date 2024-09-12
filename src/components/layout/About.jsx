@@ -1,7 +1,7 @@
 const About = () => {
   return (
     <>
-      <div class="container-fluid bg-light vh-100">
+      <div class="container-fluid bg-light vh-100 my-4">
         <div class="row h-50 g-0 position-relative p-3">
           <div class="col-md-6 p-4 ps-md-0">
             <h4 class="mt-4 text-center">

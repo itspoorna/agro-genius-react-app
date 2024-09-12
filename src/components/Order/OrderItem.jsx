@@ -76,4 +76,4 @@ const OrderItem = ({ data }) => {
   );
 }
 
-export default OrderItem;
+export default React.memo(OrderItem);

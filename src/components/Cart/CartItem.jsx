@@ -5,15 +5,17 @@ const CartItem = ({ data}) => {
 
   const [item, setItem] = useState(data);
   
-  const { name, category, productImage, price, quantity } = item.product;
+  const { price, quantity } = item;
+  const { id, name, category, productImage,} = item.product;
 
   return (
-    <div className="row mb-4 d-flex justify-content-between align-items-center">
+    <>
+    <div key={id} className="row mb-4 d-flex justify-content-between align-items-center">
       <div className="col-md-2 col-lg-2 col-xl-2">
         <img
           src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
           className="img-fluid rounded-3"
-          alt="Cotton T-shirt"
+          alt="Product"
         />
       </div>
       <div className="col-md-3 col-lg-3 col-xl-3">
@@ -57,6 +59,7 @@ const CartItem = ({ data}) => {
         </a>
       </div>
     </div>
+    </>
   );
 };
 

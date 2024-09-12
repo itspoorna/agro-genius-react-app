@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import axios from "axios";
 // import Dasboard from "../Dashboard/Dasboard";
 import { useAuth } from "../context/Auth";
-import Cart from "../components/Cart/Cart";
+import Order from "../components/Order/Order";
 // import PageNotFound from "../../src/Main/PageNotFound";
 
-const PrivateRoute = ({ path }) => {
+const PrivateRoute = ({ children }) => {
+  
+  const location = useLocation();
+
   const [loading, setLoading] = useState(true);
   const [, setAuthenticated] = useState(false); 
   const [auth] = useAuth(); // Get authentication status from context
@@ -33,14 +36,15 @@ const PrivateRoute = ({ path }) => {
   }, []);
 
   console.log(auth);
+
   if (loading) {
     return null; 
   }
 
   return auth.token ? (
-    <Cart />
+    <Order/>
   ) : (
-    <Navigate to="/signin"/>
+    <Navigate to="/signin" />
     // <PageNotFound/>
   );
 };

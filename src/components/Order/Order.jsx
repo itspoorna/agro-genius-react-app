@@ -1,35 +1,12 @@
 import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 
-// const data = [
-//   {
-//     "id": 1,
-//     "amount": 1000.0,
-//     "orderStatus": null,
-//     "createdAt": "2024-08-20T19:36:54.741287",
-//     "orderProducts": [
-//       {
-//         "price": 1000,
-//         "quantity": 20,
-//         "orderId": 1,
-//         "productDto": {
-//           "id": 1,
-//           "name": "TOMATO SEEDS",
-//           "brand": "Syngenta",
-//           "quantity": 20,
-//           "price": 1000,
-//           "category": "Seeds",
-//           "productImage": "url//veggies"
-//         }
-//       }
-//     ]
-//   }
-// ];
 const Order = () => {
 
   const [orderData, setOrderData] = useState();
   const [error, setError] = useState();
-
+  const [amount, setAmount] = useState(0);
+  const [createdAt, setCreatedAt] = useState(null);
   const url = import.meta.env.VITE_AGRO_GENIUS_URL;
 
   const userId = 1;
@@ -40,8 +17,10 @@ const Order = () => {
       const fetchData = async () =>{
         const response = await fetch(`${url}/order/user/${userId}`)
         const data = await response.json();
-        console.log(data[0]);
-        setOrderData(data[0]);
+        console.log(data);
+        setOrderData(data);
+        setAmount(data[0].amount);
+        setCreatedAt(data[0].createdAt);
       }
       
       fetchData();
@@ -51,11 +30,11 @@ const Order = () => {
     }
   }, []);
 
-  // console.log(orderData[0].orderProducts);
+  // console.log(orderData.orderProducts);
 
   return (
     <section className="vh-100 gradient-custom">
-      <div className="container py-5">
+      <div className="container py-3">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-lg-10 col-xl-8">
             <div className="card" style={{ borderRadius: 10 }}>
@@ -79,23 +58,23 @@ const Order = () => {
                 </div>
 
                 {/* Order Item details */}
-                {orderData && orderData.orderProducts.map( (data) => <OrderItem key={orderData.id} data={data} />)}
+                {orderData && orderData[0].orderProducts.map( (data) => <OrderItem key={orderData.id} data={data} />)}
                 {/* Order Item details */}
 
                 <div className="d-flex justify-content-between pt-2">
                   <p className="fw-bold mb-0">Order Details</p>
                   <p className="text-muted mb-0">
-                    <span className="fw-bold me-4">Total</span> ₹ Total Price
+                    <span className="fw-bold me-4">Total</span> ₹ {amount}
                   </p>
                 </div>
                 <div className="d-flex justify-content-between pt-2">
                   <p className="text-muted mb-0">Invoice Number : 788152</p>
                   <p className="text-muted mb-0">
-                    <span className="fw-bold me-4">Discount</span> $19.00
+                    <span className="fw-bold me-4">Discount</span> 10%
                   </p>
                 </div>
                 <div className="d-flex justify-content-between">
-                  <p className="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
+                  <p className="text-muted mb-0">Invoice Date : {createdAt}</p>
                   <p className="text-muted mb-0">
                     <span className="fw-bold me-4">GST 18%</span> 123
                   </p>
@@ -118,14 +97,14 @@ const Order = () => {
                 }}
               >
                 <h5 className="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">
-                  Total paid: <span className="h2 mb-0 ms-2"> ₹ Total Price</span>
+                  Total paid: <span className="h2 mb-0 ms-2"> ₹ {amount}</span>
                 </h5>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </section>  
   );
 };
 

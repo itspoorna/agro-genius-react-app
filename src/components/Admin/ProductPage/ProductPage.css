@@ -1,0 +1,110 @@
+.tm-content-row {
+    justify-content: space-between;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+
+  .table {
+    background-color: #50697f;
+    color: #fff;
+    font-size: 85%;
+    margin-bottom: 0;
+  }
+
+  .tm-block {
+    padding: 40px;
+    -webkit-box-shadow: 1px 1px 5px 0 #455c71;
+    -moz-box-shadow: 1px 1px 5px 0 #455c71;
+    box-shadow: 1px 1px 5px 0 #455c71;
+    min-height: 350px;
+    height: 100%;
+    max-height: 650px;
+  }
+
+  .tm-block-col {
+    margin-bottom: 30px;
+  }
+
+  .tm-block-products {
+    min-height: 650px;
+  }
+
+  .tm-product-table-container {
+    max-height: 465px;
+    margin-bottom: 15px;
+    overflow-y: scroll;
+  }
+  .tm-product-table tr {
+    font-weight: 600;
+  }
+
+  .table-hover tbody tr {
+    transition: all 0.2s ease;
+  }
+  .table-hover tbody tr:hover {
+    color: #a0c0de;
+  }
+
+  .tm-table-small td,
+.tm-table-small th {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+  .tm-block-product-categories {
+    min-height: 650px;
+  }
+  .tm-product-table-container {
+    max-height: 465px;
+    margin-bottom: 15px;
+    overflow-y: scroll;
+  }
+  .tm-product-table tr {
+    font-weight: 600;
+  }
+
+  .tm-product-delete-icon {
+    font-size: 1.1rem;
+    color: #fff;
+  }
+  .tm-product-delete-link {
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #394e64;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+  }
+  .tm-product-delete-link:hover .tm-product-delete-icon {
+    color: #6d8ca6;
+  }
+
+  .tm-mt-big {
+    margin-top: 57px;
+  }
+  .tm-mb-big {
+    margin-bottom: 60px;
+  }
+
+  .custom-select {
+    width: 100%;
+    border: none;
+    color: #acc6de;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+    padding: 15px;
+    background: url(../img/arrow-down.png) 98% no-repeat #50657b;
+  }
+  .custom-select:focus {
+    outline: 0;
+  }
