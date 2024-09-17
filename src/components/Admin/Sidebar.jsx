@@ -1,4 +1,3 @@
-import { useKeycloak } from "@react-keycloak/web";
 import React from "react";
 import {
   BsCart3,
@@ -8,9 +7,24 @@ import {
   BsFillGearFill,
 } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/Auth";
 
 function Sidebar({ openSidebarToggle, OpenSidebar }) {
   
+  const [auth, updateAuth] = useAuth();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    updateAuth({
+      username: null,
+      token: null,
+      userId: null,
+      role: null
+    });
+  
+    navigate("/");  // Redirect immediately after logout
+  };
+
   return (
     <aside
       id="sidebar"
@@ -58,7 +72,7 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
         </li> */}
 
         <li className="sidebar-list-item">
-          <Link>
+          <Link onClick={handleLogout}>
             <BsFillGearFill className="icon" /> Log out
           </Link>
         </li>

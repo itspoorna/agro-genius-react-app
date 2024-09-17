@@ -1,5 +1,4 @@
-import { useKeycloak } from "@react-keycloak/web";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BsCart3,
   BsGrid1X2Fill,
@@ -7,9 +6,45 @@ import {
   BsFillGrid3X3GapFill,
   BsFillGearFill,
 } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/Auth";
 
 function Sidebar({ openSidebarToggle, OpenSidebar }) {
+
+  const navigate = useNavigate();
+
+  const [auth, updateAuth] = useAuth();
+
+  const [logged, setLogged] = useState(false);
+
+  // useEffect(() => {
+  //   if(logged){
+  //     navigate("/");
+  //   }
+  // }, [logged]);
+
+  // const handleLogout = () => {
+  //   localStorage.setItem("token","undefined");
+  //   updateAuth({
+  //     username: null,
+  //     token: "undefined",
+  //     userId: null,
+  //   });
+  //   setLogged(true);
+  // };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    updateAuth({
+      username: null,
+      token: null,
+      userId: null,
+      role: null
+    });
+  
+    navigate("/");  // Redirect immediately after logout
+  };
+  
   
   return (
     <aside
@@ -52,7 +87,7 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
         </li>
 
         <li className="sidebar-list-item">
-          <Link>
+          <Link onClick={handleLogout}>
             <BsFillGearFill className="icon" /> Log out
           </Link>
         </li>

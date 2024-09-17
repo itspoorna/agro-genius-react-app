@@ -1,9 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { useAuth } from "../../context/Auth";
+import { useGoogleLogin } from "@react-oauth/google";
 
-
-const Signin = ({ path }) => {
+const Signin = () => {
+  const [auth, updateAuth] = useAuth();
 
   const navigate = useNavigate();
 
@@ -12,28 +15,50 @@ const Signin = ({ path }) => {
     password: "",
   });
 
-//Google sign in'
-const handleGoogleSignIn = () => {
-  try {
-      const signInURL = `${import.meta.env.VITE_GOOGLE_SIGNIN_URL}?response_type=code&client_id=${import.meta.env.VITE_CLIENT_ID}&kc_idp_hint=google`;
-      const signInWindow = window.open(
-          signInURL,
-          "google login",
-          "toolbar=no, menubar=no, width=700, height=700, top=100, left=300"
-      );
+  //Google sign in'
+  const googleLogin = useGoogleLogin({
+    onSuccess: (codeResponse) => signWithGoogle(codeResponse),
+    onError: (error) => toast.error("Google login failed. Please try again."),
+  });
 
-      if (signInWindow) {
-          const interval = setInterval(() => {
-              if (signInWindow.closed) {
-                  clearInterval(interval);
-                  navigate('/about');
-              }
-          }, 1000);
+  const signWithGoogle = async (codeResponse) => {
+    try {
+      const requestBody = {
+        accessToken: codeResponse?.access_token,
+      };
+      const response = await axios
+        .post(`http://localhost:8081/api/v1/user/signInWithGoogle`, requestBody)
+        .catch((err) => {
+          console.error(err);
+          toast.error("An error occurred during login. Please try again.");
+        });
+
+      if (response?.status === 200) {
+        console.log(response);
+        toast.success("Logged in Successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        const token = response.headers["access_token"];
+        localStorage.setItem("token", token);
+        // Update auth context state
+        updateAuth({
+          token: token,
+          username: "",
+          role: "",
+        });
+        setTimeout(() => {
+          setUser(null);
+          navigate("/");
+        }, 3000);
+      } else if (response?.status === 401) {
+        toast.warning("Enter valid Credentials...!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
       }
-
-  } catch (error) {
-      console.error('Error during Google sign-in:', error);
-      alert('An error occurred during Google sign-in. Please try again.');
+    } catch (error) {
+      toast.error("An error occurred during login. Please try again.");
     }
   };
 
@@ -44,27 +69,54 @@ const handleGoogleSignIn = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(user);
+
     try {
       delete axios.defaults.headers.common["Authorization"];
-      const response = await axios.post("http://localhost:8081/api/v1/user/signIn", user,{
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios
+        .post("http://localhost:8081/api/v1/user/signIn", user, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .catch((err) => err);
 
-      if (response) {
-        localStorage.setItem("token", response.data);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
-        console.log(axios.defaults.headers.common["Authorization"]);
-        // const token = response.config.headers.Authorization;
-        // console.log(token);
-      } else {
-        alert("error in registration: ");
+      if (response.status === 200) {
+        console.log(response);
+        toast.success("Logged in Successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        const token = response.headers["access_token"];
+        localStorage.setItem("token", token);
+        // Update auth context state
+        updateAuth({
+          token: token,
+          username: "",
+          role: "",
+        });
+        setTimeout(() => {
+          setUser(null);
+          navigate("/");
+        }, 3000);
+      } else if (response.status === 401) {
+        toast.warning("Enter valid Credentials...!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
       }
     } catch (error) {
-      console.error("Error:", error);
-      // setResponseMessage('Error occurred while creating user');
+      // Handle server or network errors
+      if (error.response && error.response.status === 401) {
+        toast.error("Enter valid Credentials...!", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      } else {
+        toast.warning("Internal server error..! Try again later", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      }
     }
   };
 
@@ -77,6 +129,7 @@ const handleGoogleSignIn = () => {
         // backgroundSize: "cover",
       }}
     >
+      <ToastContainer />
       <div className="container py-3 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -139,10 +192,14 @@ const handleGoogleSignIn = () => {
                       <button
                         className="btn btn-md w-100"
                         style={{ backgroundColor: "#dd4b39" }}
-                        onClick={handleGoogleSignIn}
+                        onClick={() => googleLogin()}
                       >
                         <i className="fab fa-google me-2" /> Sign in with Google
                       </button>
+                      {/* <GoogleLogin
+                        onSuccess={responseMessage}
+                        onError={errorMessage}
+                      /> */}
                     </div>
                   </div>
                   <div className="col">

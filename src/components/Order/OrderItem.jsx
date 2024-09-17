@@ -5,7 +5,7 @@ const OrderItem = ({ data }) => {
   const [order, setOrder] = useState(data);
       
   const{quantity = null, price= 0 } = order;
-  const {name = '',category = '', brand = ''} = order.productDto;     
+  const {name = '',category = '', brand = '', productImage = 'https://shj.org/wp-content/uploads/2018/04/no_product_image.jpg'} = order.productDto;     
 
   return (
     <div className="card shadow-0 border mb-4">
@@ -13,7 +13,7 @@ const OrderItem = ({ data }) => {
         <div className="row">
           <div className="col-md-2">
             <img
-              src="https://tse2.mm.bing.net/th?id=OIP.BafU5SZmrWwf0gKlge4PgwHaHa&pid=Api&P=0&h=180"
+              src={productImage}
               className="img-fluid"
               alt="Phone"
             />

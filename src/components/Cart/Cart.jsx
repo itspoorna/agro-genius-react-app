@@ -3,18 +3,25 @@ import "./Cart.css";
 import axios from "axios";
 import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/Auth";
 // import axios from "axios";
 
 const Cart = () => {
+
+  const [auth, updateAuth] = useAuth();
+
+  const userId = auth.userId || null;
+
+  const token = auth.token || null;
+
   const [cartData, setCartData] = useState();
   const [numberOfItems, setNumberOfItems] = useState();
   const [totalPrice, setTotal] = useState();
+  const [amountToBePaid, setPay] = useState();
   const [message, setMessage] = useState("");
   const [error, setError] = useState();
 
   const url = import.meta.env.VITE_AGRO_GENIUS_URL;
-
-  const userId = 1;
 
   const calculate = async () => {
     if (cartData != undefined) {
@@ -24,13 +31,13 @@ const Cart = () => {
         0
       );
       setTotal(total);
+      setPay(total+50);
       setNumberOfItems(cartItems.length);
     }
   };
 
   // console.log(axios.defaults.headers.common["Authorization"]);
   useEffect(() => {
-    const token = localStorage.getItem("token");
     try {
       const fetchData = async () => {
         const response = await axios.get(`${url}/cart/user/${userId}`,{
@@ -49,7 +56,7 @@ const Cart = () => {
     }
   }, [numberOfItems]);
 
-  // calculate();
+  calculate();
 
   const handleOrder = (event) => {
     event.preventDefault();
@@ -92,28 +99,28 @@ const Cart = () => {
                         <div className="p-5">
                           <div className="d-flex justify-content-between align-items-center mb-5">
                             <h1 className="fw-bold mb-0">Shopping Cart</h1>
-                            <h6 className="mb-0 text-muted">{numberOfItems}</h6>
+                            <h6 className="mb-0 text-muted">No of Items :<b>{numberOfItems}</b></h6>
                           </div>
                           <hr className="my-4" />
 
                           {/* Cart Items */}
-                          {/* {cartData  &&
+                          {cartData  &&
                             cartData.cartProducts.map((item) => (
                               <CartItem key={item.product.id} data={item} />
-                            ))} */}
+                            ))}
 
                           <hr className="my-4" />
 
                           {/* End of Cart Items */}
-                          <hr className="my-4" />
-                          <div className="pt-5">
+                          {/* <hr className="my-4" /> */}
+                          {/* <div className="pt-5">
                             <h6 className="mb-0">
                               <Link href="#!" className="text-body">
                                 <i className="fas fa-long-arrow-alt-left me-2" />
                                 Back to shop
                               </Link>
                             </h6>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
 
@@ -137,9 +144,9 @@ const Cart = () => {
                               <option value={1}>
                                 Standard-Delivery- ₹50.00
                               </option>
-                              <option value={2}>Two</option>
+                              {/* <option value={2}>Two</option>
                               <option value={3}>Three</option>
-                              <option value={4}>Four</option>
+                              <option value={4}>Four</option> */}
                             </select>
                           </div>
                           <h5 className="text-uppercase mb-3">Give code</h5>
@@ -156,7 +163,7 @@ const Cart = () => {
                           <hr className="my-4" />
                           <div className="d-flex justify-content-between mb-5">
                             <h5 className="text-uppercase">Total Price</h5>
-                            <h5>₹ {totalPrice}</h5>
+                            <h5>₹ {amountToBePaid}</h5>
                           </div>
                           <button
                             type="button"

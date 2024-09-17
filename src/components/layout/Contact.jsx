@@ -1,6 +1,7 @@
 import FeedbackForm from "../FeedbackForm";
 
 const Contact = () => {
+
   return (
     <>
       {/* Contact Intro */}

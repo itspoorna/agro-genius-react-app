@@ -13,7 +13,7 @@ const CartItem = ({ data}) => {
     <div key={id} className="row mb-4 d-flex justify-content-between align-items-center">
       <div className="col-md-2 col-lg-2 col-xl-2">
         <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
+          src={productImage}
           className="img-fluid rounded-3"
           alt="Product"
         />

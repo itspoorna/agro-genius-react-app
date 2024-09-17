@@ -1,40 +1,122 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
-import axios from "axios";
+import React, { useState, useContext, createContext } from "react";
+import parseJwt from "../parseJwt";
 
 const AuthContext = createContext();
 
+// Move the isTokenExpired function above the AuthProvider
+const isTokenExpired = (exp) => {
+  if (!exp) return true;
+  const currentTime = Math.floor(Date.now() / 1000);
+  // console.log(exp < currentTime); 
+  if(exp < currentTime){
+    localStorage.setItem("token", "undefined");
+  }
+  return exp < currentTime;
+};
+
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(() => {
-    const token = localStorage.getItem("token");
-    // const user = localStorage.getItem("user");
-    // const userId = localStorage.getItem("user_id"); // Add this line to get the user ID
-    return {
-    //   user: user ? JSON.parse(user) : null,
-      token: token || "",
-    //   user_id: userId || null, // Set user ID
-    };
+    try {
+      const token = localStorage.getItem("token");
+
+      if (token && token !== "undefined") {
+        const data = parseJwt(token);
+
+        // console.log(data);
+        if (data && !isTokenExpired(data.exp)) {
+          const { userId, email, username, authorities } = data;
+          return {
+            userId: userId || null,
+            email : email || null,
+            token: token,
+            username: username || null,
+            role: authorities || null,
+          };
+        }
+      }
+      return null;
+    } catch (error) {
+      console.error("Error parsing JWT:", error);
+      return null;
+    }
   });
 
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = auth.token;
-  }, [auth.token]);
-
   const updateAuth = (newAuth) => {
-    setAuth(newAuth);
-    localStorage.setItem("token", newAuth.token);
-    // localStorage.setItem("user", JSON.stringify(newAuth.user));
-    // localStorage.setItem("user_id", newAuth.user_id); // Update user ID in local storage
+    if (newAuth && newAuth.token) {
+      try {
+        localStorage.setItem("token", newAuth.token);
+        setAuth(newAuth);
+      } catch (error) {
+        console.error("Error setting token in localStorage:", error);
+      }
+    } else {
+      localStorage.removeItem("token");
+      setAuth(null);
+    }
   };
 
-  return (
+    return (
     <AuthContext.Provider value={[auth, updateAuth]}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-
-
 const useAuth = () => useContext(AuthContext);
 
 export { useAuth, AuthProvider };
+
+// import React, { useState, useEffect, useContext, createContext } from "react";
+// import parseJwt from "../parseJwt";
+
+// const AuthContext = createContext();
+
+// const AuthProvider = ({ children }) => {
+
+//   const [auth, setAuth] = useState(() => {
+//     try {
+//       const token = localStorage.getItem("token");
+
+//       const isTokenExpired = (exp) => {
+//         if (!exp) return true;
+//         const currentTime = Math.floor(Date.now() / 1000);
+//         console.log(currentTime);
+//         console.log(exp);
+//         return exp < currentTime;
+//       };
+
+//       if(token && token !=='undefined'){
+//         const data = parseJwt(token);
+//         const {email, username, authorities} = data;
+//         isTokenExpired(data.exp);
+//         return {
+//           userId: email || null,
+//           token: token || "",
+//           username: username || null,
+//           role : authorities || null
+//         };
+//       }
+//       return null;
+//     } catch (error) {
+//       console.error("Error parsing JWT:", error);
+//     }
+//   });
+
+//   useEffect(() => {
+//   }, [auth]);
+
+//   const updateAuth = (newAuth) => {
+//     setAuth(newAuth);
+//     localStorage.setItem("token", newAuth.token);
+//   };
+
+//   return (
+//     <AuthContext.Provider value={[auth, updateAuth]}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
+
+// const useAuth = () => useContext(AuthContext);
+
+// export { useAuth, AuthProvider };

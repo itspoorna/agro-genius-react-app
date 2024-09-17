@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { storage } from "../../firebase";
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -19,16 +21,44 @@ const Signup = () => {
     setUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
 
+  //Upload Image
+  const handleFileChange = async (e) => {
+    try {
+      const file = e.target.files[0];
+      await uploadProfilePicture(file); // Call the function to upload the file
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const uploadProfilePicture = async (file) => {
+    if (!file) return;
+  
+    const storageRef = ref(storage, `profile_pics/${file.name}`);
+    try {
+      // Upload the file to Firebase Storage
+      await uploadBytes(storageRef, file);
+      // Get the download URL
+      const downloadURL = await getDownloadURL(storageRef);
+      console.log("File available at", downloadURL);
+      setUser((prevUser) => ({ ...prevUser, profilePic: downloadURL }));
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      }
+  };
+
+  console.log(user);
+
   const states = ["Karnataka", "Andra"];
 
   //Google sign in'
-  const signInWithGoogle = () =>{
+  const signInWithGoogle = () => {
     window.open(
       "http://localhost:8080/realms/AGROGENIUS/protocol/openid-connect/auth?response_type=code&client_id=AGFE&kc_idp_hint=google",
       "google login",
       "toolbar=no, menubar=no, width=700, height=700, top=100, left=300"
-      );
-  }
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -190,7 +220,7 @@ const Signup = () => {
               </div>
               <div className="col-md-2 me-auto">
                 <label htmlFor="inputZip" className="form-label">
-                  Zip
+                  Zipcode
                 </label>
                 <input
                   type="text"
@@ -199,6 +229,19 @@ const Signup = () => {
                   value={user.pincode}
                   id="inputZip"
                   onChange={(e) => handleChange(e)}
+                />
+              </div>
+              <div className="col-md-10 offset-md-1">
+                <label htmlFor="profilePic" className="form-label">
+                  Profile Image
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  name="profilePic"
+                  id="profilePic"
+                  placeholder="Upload your profile imae"
+                  onChange={(e) => handleFileChange(e)}
                 />
               </div>
               <div className="col-md-10 offset-md-1">
@@ -222,34 +265,6 @@ const Signup = () => {
                   >
                     Register
                   </button>
-                </div>
-              </div>
-              <hr className="" />
-              {/* Full-width buttons */}
-              <div className="row my-2">
-                <div className="col">
-                  <div className="d-grid">
-                    <button
-                      className="btn btn-md w-100 ms-auto"
-                      style={{ backgroundColor: "#dd4b39" }}
-                      onClick={signInWithGoogle}
-                    >
-                      <i className="fab fa-google me-2" /> Sign in with Google
-                    </button>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="d-grid">
-                    <button
-                      className="btn btn-md w-100"
-                      style={{ backgroundColor: "#3b5998" }}
-                      type="submit"
-                      onClick={() => console.log("Facebook")}
-                    >
-                      <i className="fab fa-facebook-f me-2" /> Sign in with
-                      Facebook
-                    </button>
-                  </div>
                 </div>
               </div>
             </form>

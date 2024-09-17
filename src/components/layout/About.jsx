@@ -1,18 +1,19 @@
 const About = () => {
+
   return (
     <>
-      <div class="container-fluid bg-light vh-100 my-4">
-        <div class="row h-50 g-0 position-relative p-3">
-          <div class="col-md-6 p-4 ps-md-0">
-            <h4 class="mt-4 text-center">
+      <div className="container-fluid bg-light vh-100 my-4">
+        <div className="row h-50 g-0 position-relative p-3">
+          <div className="col-md-6 p-4 ps-md-0">
+            <h4 className="mt-4 text-center">
               <b>About Us</b>
             </h4>
-            <p class="text-break lh-base ">
+            <p className="text-break lh-base ">
               Welcome to Agro Genius: Cultivating Sustainable Farming About Us
               At Agro Genius, we believe that farming isn’t just a profession;
               it’s a way of life.
             </p>
-            <p class="text-break lh-base">
+            <p className="text-break lh-base">
               Our mission is to empower farmers with knowledge, tools, and
               resources to thrive in an ever-evolving agricultural landscape.
               Whether you’re a seasoned farmer or just starting out, Agro Genius
@@ -22,7 +23,7 @@ const About = () => {
               rotation tips to pest management strategies, we’ve got you
               covered.
             </p>
-            <p class="text-break lh-base">
+            <p className="text-break lh-base">
               Marketplace: Explore our marketplace—a digital bazaar where
               farmers can buy and sell organic produce, seeds, and equipment.
               Connect directly with buyers and sellers, fostering a vibrant
@@ -37,8 +38,8 @@ const About = () => {
               prosperous future together!
             </p>
           </div>
-          <div class="col-md-6 mb-md-0 p-md-4" id="contact">
-            <img src="about.jpg" class="w-100" alt="..." />
+          <div className="col-md-6 mb-md-0 p-md-4" id="contact">
+            <img src="about.jpg" className="w-100" alt="..." />
           </div>
         </div>
       </div>
