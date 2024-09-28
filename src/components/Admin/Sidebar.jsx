@@ -22,7 +22,7 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
       role: null
     });
   
-    navigate("/");  // Redirect immediately after logout
+    navigate("/");  
   };
 
   return (
@@ -43,6 +43,12 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
       <ul className="sidebar-list">
         <li className="sidebar-list-item">
           <Link to="/admin">
+            <BsGrid1X2Fill className="icon" /> Profile 
+          </Link>
+        </li>
+
+        <li className="sidebar-list-item">
+          <Link to="report">
             <BsGrid1X2Fill className="icon" /> Report 
           </Link>
         </li>

@@ -8,3 +8,7 @@
 a{
   text-decoration: none !important;
 }
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;                 /* Hides scrollbar in Chrome, Safari, and Edge */
+}

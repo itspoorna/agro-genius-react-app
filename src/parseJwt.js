@@ -35,7 +35,7 @@ function parseJwt(token) {
       }
     }
 
-    console.log(payload);
+    // console.log(payload);
     return payload;
   }
   return null;

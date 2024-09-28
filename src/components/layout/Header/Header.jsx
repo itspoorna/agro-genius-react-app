@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const Header = () => {
 
   const [auth] = useAuth();
-  console.log(auth);
+  // console.log(auth);
 
   const profileUrl =
     "https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png";
@@ -108,7 +108,7 @@ const Header = () => {
                     <a
                       className="h1 navbar-link-white nav-link "
                       aria-current="page"
-                      href={"/user"}
+                      href={auth?.role === "user" ? "/user" : "/admin"}
                     >
                       <img
                         src={profileUrl}

@@ -27,11 +27,13 @@ import EditProduct from "./components/Admin/ProductPage/EditProduct";
 import "react-toastify/dist/ReactToastify.css";
 import AdminRoute from "./routes/AdminRoute";
 import Unauthorized from "./pages/Unauthorized";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
     <>
       <Layout>
+      <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="product" element={<Products />} />
@@ -51,7 +53,8 @@ const App = () => {
           </Route>
 
           <Route path="admin" element={<AdminRoute />}>
-              <Route index element={<Reports />} />
+              <Route index element={<Profile />} />
+              <Route path="report" element={<Reports />} />
               <Route path="orders" element={<Orders />} />
               <Route path="feedback" element={<Feedback />} />
               <Route path="users" element={<Users />} />
@@ -59,6 +62,7 @@ const App = () => {
               <Route path="add-product" element={<AddProductForm />} />
               <Route path="edit-product" element={<EditProduct />} />
           </Route>
+          
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<PagenotFound />} />
         </Routes>

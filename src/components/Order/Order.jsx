@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 import axios from "axios";
 import { useAuth } from "../../context/Auth";
+import { Link } from "react-router-dom";
 
 const Order = () => {
   const [orderData, setOrderData] = useState([]);
@@ -17,13 +18,13 @@ const Order = () => {
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const response = await axios.get(`${url}/order/user/${auth?.userId}`,{
-          headers : {
-            Authorization : auth?.token
-          }
+        const response = await axios.get(`${url}/order/user/${auth?.userId}`, {
+          headers: {
+            Authorization: auth?.token,
+          },
         });
         const data = await response.data;
-        console.log(data);
+        // console.log(data);
         setOrderData(data);
         setAmount(data[0].amount);
         setCreatedAt(data[0].createdAt);
@@ -35,20 +36,22 @@ const Order = () => {
     }
   }, []);
 
-  // console.log(orderData.orderProducts);
+  console.log(orderData?.length);
 
   return (
     <section className="vh-100">
       <div className="py-3">
-        {!orderData ? (
+        {orderData?.length <= 0 ? (
           <>
             <div className="text-center">
-              <img
-                src="https://cdn.dribbble.com/users/3470232/screenshots/7776749/2.gif"
-                className="img-fluid"
-                alt="No Order found"
-                width={800}
-              />
+              <Link to={"/product"}>
+                <img
+                  src="https://cdn.dribbble.com/users/3470232/screenshots/7776749/2.gif"
+                  className="img-fluid"
+                  alt="No Order found"
+                  width={800}
+                />
+              </Link>
             </div>
           </>
         ) : (
@@ -59,7 +62,9 @@ const Order = () => {
                   <div className="card-header px-4 py-5">
                     <h5 className="text-muted mb-0">
                       Thanks for your Order,{" "}
-                      <span style={{ color: "#a8729a" }}>Customer Name</span>!
+                      <span style={{ color: "#a8729a" }}>
+                        {auth?.username || "Customer Name"}
+                      </span>
                     </h5>
                   </div>
                   <div className="card-body p-4">
@@ -76,8 +81,8 @@ const Order = () => {
                     </div>
 
                     {/* Order Item details */}
-                    {orderData.length > 0 &&
-                      orderData[0].orderProducts.map((data) => (
+                    {orderData?.length > 0 &&
+                      orderData[0]?.orderProducts?.map((data) => (
                         <OrderItem key={orderData.id} data={data} />
                       ))}
                     {/* Order Item details */}

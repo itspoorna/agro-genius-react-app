@@ -27,26 +27,24 @@ const Profile = () => {
   const [loading, setLoading] = useState(true); // Handle loading state
 
   useEffect(() => {
-    // Fetch user data from the backend
     const fetchUserData = async () => {
+
       try {
-        const response = await axios.get(`${url}/user/${auth?.userId}`, {
+        const response = await axios.get(`${url}/user/${auth?.email}`, {
           headers: {
             Authorization: auth?.token,
           },
         });
         const data = response.data;
         setUser(data);
-
-        setLoading(false); // Stop loading once the data is fetched
+        setLoading(false); 
       } catch (error) {
         console.error("Error fetching user data:", error);
         setLoading(false);
       }
     };
-
     fetchUserData();
-  }, [user,loading]);
+  }, []);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -78,9 +76,8 @@ const Profile = () => {
         }
       );
 
-      if (response.ok) {
-        setUser(formData); // Update the user state with new data
-
+      if (response) {
+        window.location.reload();
         setIsEditing(false);
       } else {
         console.error("Error updating user profile");
@@ -130,12 +127,12 @@ const Profile = () => {
                 {user ? user.phoneNumber : "phoneNumber data"}
               </p>
 
-              <button className="edit-btn" onClick={() => handleEdit}>
+              <button className="edit-btn" onClick={() => handleEdit()}>
                 Edit Profile
               </button>
             </div>
           ) : (
-            <form className="edit-form" onSubmit={() => handleSubmit}>
+            <form className="edit-form" onSubmit={(e) => handleSubmit(e)}>
               <div className="form-group">
                 <label htmlFor="fullName">Name:</label>
 
@@ -144,7 +141,7 @@ const Profile = () => {
                   id="fullName"
                   name="fullName"
                   defaultValue={user.fullName}
-                  onChange={() => handleChange}
+                  onChange={(e) => handleChange(e)}
                   required
                 />
               </div>
@@ -157,7 +154,7 @@ const Profile = () => {
                   id="email"
                   name="emailId"
                   defaultValue={user.emailId}
-                  onChange={() => handleChange}
+                  onChange={(e) => handleChange(e)}
                   required
                 />
               </div>
@@ -170,7 +167,7 @@ const Profile = () => {
                   id="phoneNumber"
                   name="phoneNumber"
                   defaultValue={user.phoneNumber}
-                  onChange={() => handleChange}
+                  onChange={(e) => handleChange(e)}
                   required
                 />
               </div>
@@ -183,7 +180,7 @@ const Profile = () => {
                 <button
                   type="button"
                   className="cancel-btn"
-                  onClick={handleCancel}
+                  onClick={() => handleCancel()}
                 >
                   Cancel
                 </button>

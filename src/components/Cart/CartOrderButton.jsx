@@ -4,7 +4,7 @@ import { useAuth } from "../../context/Auth";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const OrderButton = ({ data, price }) => {
+const CartOrderButton = ({ data, price }) => {
   const [auth] = useAuth();
   const [orderId, setId] = useState(0);
   const token = auth?.token || null;
@@ -60,11 +60,11 @@ const OrderButton = ({ data, price }) => {
         theme: {
           color: "#3399cc",
         },
-        handler: function (res) {
+        handler: async function (res) {
           order["razorPayOrderID"] = res.razorpay_order_id;
 
           // You can send this data to your backend for further processing or verification
-          const response = axios.post(`${url}/order/handle-payment-callback`, order, {
+          const response = await axios.post(`${url}/order/handle-payment-callback`, order, {
             headers: {
               "Content-Type": "application/json",
               Authorization: token,
@@ -76,10 +76,24 @@ const OrderButton = ({ data, price }) => {
               });
             });
             
-            toast.success(response.data, {
-              position: "top-right",
-              autoClose: 3000,
-            });
+            const deleteCart = await axios.delete(`${url}/cart/user/${auth?.userId}`, {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: auth?.token,
+                },
+              }).catch((error) => {
+                console.log(error);
+                  toast.warning("Payment verification failed: ", error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                  });
+                });
+
+                toast.success("Order placed successfully", {
+                    position: "top-right",
+                    autoClose: 3000,
+                  });
+                  window.location.reload()
         },
         modal: {
           // Detect when the user dismisses the modal (without completing payment)
@@ -145,4 +159,4 @@ const OrderButton = ({ data, price }) => {
   );
 };
 
-export default OrderButton;
+export default CartOrderButton;

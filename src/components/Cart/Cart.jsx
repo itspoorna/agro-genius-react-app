@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import "./Cart.css";
 import axios from "axios";
 import CartItem from "./CartItem";
-import { Link } from "react-router-dom";
 import { useAuth } from "../../context/Auth";
+import { ToastContainer } from "react-toastify";
+import CartOrderButton from "./CartOrderButton";
+import { Link } from "react-router-dom";
 // import axios from "axios";
 
 const Cart = () => {
-
   const [auth, updateAuth] = useAuth();
 
   const userId = auth.userId || null;
 
   const token = auth.token || null;
 
-  const [cartData, setCartData] = useState();
+  const [cartData, setCartData] = useState(null);
   const [numberOfItems, setNumberOfItems] = useState();
   const [totalPrice, setTotal] = useState();
   const [amountToBePaid, setPay] = useState();
@@ -23,30 +24,32 @@ const Cart = () => {
 
   const url = import.meta.env.VITE_AGRO_GENIUS_URL;
 
-  const calculate = async () => {
-    if (cartData != undefined) {
-      const cartItems = await cartData.cartProducts;
-      const total = cartItems.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.product.price,
-        0
-      );
-      setTotal(total);
-      setPay(total+50);
-      setNumberOfItems(cartItems.length);
-    }
-  };
+  useEffect(() => {
+    const calculate = async () => {
+      if (cartData != null && cartData != undefined) {
+        const total = cartData?.cartProducts.reduce(
+          (accumulator, currentValue) => accumulator + currentValue.price,
+          0
+        );
+        setTotal(total);
+        setPay(total + 50);
+        setNumberOfItems(cartData?.cartProducts?.length);
+      }
+    };
+    calculate();
+  }, [cartData]);
 
   // console.log(axios.defaults.headers.common["Authorization"]);
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const response = await axios.get(`${url}/cart/user/${userId}`,{
+        const response = await axios.get(`${url}/cart/user/${userId}`, {
           headers: {
-            Authorization: token
+            Authorization: token,
           },
         });
         const data = response.data;
-        console.log(data);
+        // console.log(data);
         setCartData(data);
       };
 
@@ -56,15 +59,12 @@ const Cart = () => {
     }
   }, [numberOfItems]);
 
-  calculate();
-
   const handleOrder = (event) => {
     event.preventDefault();
 
     try {
       const placeOrder = async () => {
-        const response = await fetch(`${url}/order/user/${userId}`, {
-          method: "POST",
+        const response = await axios.post(`${url}/order/user/${userId}`, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -82,10 +82,27 @@ const Cart = () => {
 
   return (
     <>
-        <section
-          className="vh-100 h-custom"
-          style={{ backgroundColor: "rgb(214 226 220)" }}
-        >
+      <section
+        className="vh-100 h-custom"
+        style={{ backgroundColor: "rgb(214 226 220)" }}
+      >
+        <ToastContainer/>
+        {!cartData ? (
+          <>
+            <div className="container">
+              <div className="text-center">
+                <Link to={'/'}>
+                <img
+                  src="https://img.freepik.com/premium-vector/empty-card-concept_637684-1.jpg?w=2000"
+                  alt="Empty Cart..!!"
+                  className="img-fluid mt-5"
+                  width={500}
+                />
+                </Link>
+              </div>
+            </div>
+          </>
+        ) : (
           <div className="container py-5">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-12">
@@ -99,12 +116,14 @@ const Cart = () => {
                         <div className="p-5">
                           <div className="d-flex justify-content-between align-items-center mb-5">
                             <h1 className="fw-bold mb-0">Shopping Cart</h1>
-                            <h6 className="mb-0 text-muted">No of Items :<b>{numberOfItems}</b></h6>
+                            <h6 className="mb-0 text-muted">
+                              No of Items :<b>{numberOfItems}</b>
+                            </h6>
                           </div>
                           <hr className="my-4" />
 
                           {/* Cart Items */}
-                          {cartData  &&
+                          {cartData &&
                             cartData.cartProducts.map((item) => (
                               <CartItem key={item.product.id} data={item} />
                             ))}
@@ -165,16 +184,12 @@ const Cart = () => {
                             <h5 className="text-uppercase">Total Price</h5>
                             <h5>₹ {amountToBePaid}</h5>
                           </div>
-                          <button
-                            type="button"
-                            data-mdb-button-init
-                            data-mdb-ripple-init
-                            className="btn btn-dark btn-block btn-lg"
-                            data-mdb-ripple-color="dark"
-                            onClick={handleOrder}
-                          >
-                            Buy Now
-                          </button>
+                          <div className="d-grid">
+                            <CartOrderButton
+                              data={cartData?.cartProducts}
+                              price={amountToBePaid}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -183,7 +198,8 @@ const Cart = () => {
               </div>
             </div>
           </div>
-        </section>
+        )}
+      </section>
     </>
   );
 };

@@ -7,7 +7,6 @@ const AuthContext = createContext();
 const isTokenExpired = (exp) => {
   if (!exp) return true;
   const currentTime = Math.floor(Date.now() / 1000);
-  // console.log(exp < currentTime); 
   if(exp < currentTime){
     localStorage.setItem("token", "undefined");
   }
@@ -24,9 +23,9 @@ const AuthProvider = ({ children }) => {
 
         // console.log(data);
         if (data && !isTokenExpired(data.exp)) {
-          const { userId, email, username, authorities } = data;
+          const {  email, username, authorities } = data;
           return {
-            userId: userId || null,
+            userId: email || null,
             email : email || null,
             token: token,
             username: username || null,

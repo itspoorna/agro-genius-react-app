@@ -17,7 +17,7 @@ const CartButton = ({ data }) => {
     event.preventDefault();
     
     try {
-      const response = await axios.post(`${url}/cart/user/${userId}`, data, {
+      const response = await axios.post(`${url}/cart/user/${userId}`, data[0], {
         headers: {
           "Content-Type": "application/json",
           Authorization: token

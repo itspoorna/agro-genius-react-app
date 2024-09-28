@@ -4,6 +4,7 @@ import ProductLoading from "../Product/ProductLoading";
 import { useAuth } from "../../context/Auth";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Wishlist = () => {
   const [auth, updateAuth] = useAuth();
@@ -60,12 +61,14 @@ const Wishlist = () => {
           {!loading && !error && products.length < 1 && (
             <>
               <div className="text-center my-5">
+                <Link to={'/'}>
                 <img
                   src="https://img.freepik.com/premium-vector/no-favorites-concept_637684-5.jpg"
                   alt="Empty wishlist"
                   className="img-fluid"
                   width={600}
                 />
+                </Link>
               </div>
             </>
           )}

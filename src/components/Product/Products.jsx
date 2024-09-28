@@ -10,11 +10,13 @@ const Products = () => {
   const [auth, updateAuth] = useAuth();
 
   const [products, setProducts] = useState(null);
+  const [categories, setCategory] = useState(null);
   const [error, setError] = useState(null);
+  const [filter, setFilter] = useState("");
 
   const url = import.meta.env.VITE_AGRO_GENIUS_URL;
 
-  const token = auth ? auth.token : null;
+  categories?.map((c) => console.log(c.name));
 
   useEffect(() => {
     // const result = parseJwt(token);
@@ -32,65 +34,58 @@ const Products = () => {
     }
   }, []);
 
-  const handleSearch = (e) =>{
+  const handleSearch = (e) => {
     e.preventDefault();
-    console.log("search");
-  }
+    try {
+      async function fetchData() {
+        const response = await axios.get(`${url}/products/filter/${filter}`);
+        console.log(response.data);
+        setProducts(response.data);
+      }
+
+      fetchData();
+    } catch (err) {
+      console.error(err);
+    }
+    console.log(filter);
+  };
 
   return (
     <div className="container vh-100">
-      {products && (
-        <>
-          <div className="row">
-            <div className="col-md-7 offset-md-2 my-3">
-              <div className="input-group flex-nowrap">
-                {/* <span className="input-group-text" id="addon-wrapping">
-                  <img src={search} width={40} />
-                </span> */}
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search by Product Name or Brand"
-                  aria-label="Search by Product Name or Brand"
-                  aria-describedby="addon-wrapping"
-                />
-                <span className="input-group-text" id="addon-wrapping" onClick={handleSearch}>
-                  <img src={search} width={40} />
-                </span>
-              </div>
-            </div>
-            <div className="col-md-3 my-4">
-              <div className="btn-group">
-                <button
-                  type="button"
-                  className="btn btn-success dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Category
-                </button>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Action
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
       <div className="row">
-        <ToastContainer/>
+        <div className="col-md-7 offset-md-2 my-3">
+          <div className="input-group flex-nowrap">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by Product Name , Brand or Category"
+              aria-label="Search by Product Name, Brand or Category"
+              aria-describedby="addon-wrapping"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+            <span
+              className="input-group-text"
+              id="addon-wrapping"
+              onClick={handleSearch}
+            >
+              <img src={search} width={40} />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="row">
         {error && <h4>{error}</h4>}
-        {!products && !error && <ProductLoading />}
+        {/* {!products && !error && <ProductLoading />} */}
         {products &&
           products.map((product) => (
             <div key={product.id} className="col-md-3 col-sm-12 my-3">
               <Item product={product} />
             </div>
           ))}
+        {!products && products?.length < 1 && (<>
+        <h2>No products found for results {filter}</h2>
+        </>)}
       </div>
     </div>
   );

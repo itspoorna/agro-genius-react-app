@@ -7,7 +7,7 @@ const CropInputForm = () => {
 
   const [fieldData, setData] = useState({
     "nitrogen" : 0,
-    "potasium" : 0,
+    "potassium" : 0,
     "phosphorous" : 0,
     "ph": 0,
     "city" : ""
@@ -54,7 +54,7 @@ const CropInputForm = () => {
             <input
               type="number"
               className="form-control"
-              name="potasium"
+              name="potassium"
               placeholder="Potasium"
               onChange={handleChange}
             />

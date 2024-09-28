@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <Header />
-      <div style={{background: "#e2eaef"}}>{children}</div>
+      <div className="overflow-scroll hide-scroll" style={{background: "#e2eaef"}}>{children}</div>
       <Footer />
     </>
   );

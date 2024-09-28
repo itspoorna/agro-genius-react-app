@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import { toast, ToastContainer } from "react-toastify";
 
 const FeedbackForm = () => {
-
   const captchaRef = useRef(null);
 
   const [disableSubmit, setSubmitbutton] = useState(true);
@@ -13,36 +13,40 @@ const FeedbackForm = () => {
     emailId: "",
     subject: "",
     comment: "",
-    token:""
+    token: "",
   });
 
-  const handleChange = async(event) => {
+  const handleChange = async (event) => {
     const { name, value } = event.target;
     setUser((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const tokenValue = captchaRef.current.getValue();
     setUser((prevData) => ({ ...prevData, token: tokenValue }));
-    console.log(contact,);
 
     const url = import.meta.env.VITE_AGRO_GENIUS_URL;
 
     try {
-      const  response = await axios.post(`${url}/contact`, contact)
-      console.log(response);
+      const res = await axios.post(`${url}/contact`, contact).catch((err) => {
+        toast.warning("Failed to send the feedback. Try again later..!!");
+      });
+      console.log(res);
+      if (res?.status === 200) {
+
+        toast.success("Feedback has been received.");
+      }
     } catch (error) {
       console.log(error);
     }
     // captchaRef.current.reset();
-
-  }
-
+  };
 
   return (
     <div className="container-fluid bg-light rounded p-3">
+      <ToastContainer/>
       <div className="row">
         <div className="col-md-10 offset-md-1">
           <form className="row g-3">
@@ -70,9 +74,9 @@ const FeedbackForm = () => {
                 className="form-control"
                 name="emailId"
                 id="emailId"
-                  value={contact.emailId}
+                value={contact.emailId}
                 placeholder="Enter your email ID"
-                  onChange={(e) => handleChange(e)}
+                onChange={(e) => handleChange(e)}
               />
             </div>
             <div className="col-sm-12">
@@ -101,11 +105,11 @@ const FeedbackForm = () => {
               />
             </div>
             <div className="col-sm-12">
-            <ReCAPTCHA
-              sitekey="6LewSj4qAAAAAPZ18SCnvRHDzXM4UarIi3GXgt4l"
-              ref={captchaRef}
-              onChange={() => setSubmitbutton(false)}
-            />
+              <ReCAPTCHA
+                sitekey="6LewSj4qAAAAAPZ18SCnvRHDzXM4UarIi3GXgt4l"
+                ref={captchaRef}
+                onChange={() => setSubmitbutton(false)}
+              />
             </div>
             <div className="col-sm-12">
               <button

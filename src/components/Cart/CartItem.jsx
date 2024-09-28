@@ -26,30 +26,6 @@ const CartItem = ({ data}) => {
         <h6>Quantity : {quantity}</h6>
       </div>
       {/* Update Quantity */}
-      {/* <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-        <button
-          data-mdb-button-init
-          data-mdb-ripple-init
-          className="btn btn-link px-2"
-        >
-          <i className="fas fa-minus" />
-        </button>
-        <input
-          id="form1"
-          min={0}
-          name="quantity"
-          defaultValue={quantity}
-          type="number"
-          className="form-control-sm"
-        />
-        <button
-          data-mdb-button-init
-          data-mdb-ripple-init
-          className="btn btn-link px-2"
-        >
-          <i className="fas fa-plus" />
-        </button>
-      </div> */}
       <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
         <h6 className="mb-0">₹ {price}</h6>
       </div>

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { useAuth } from "../../context/Auth";
 import { useGoogleLogin } from "@react-oauth/google";
+import parseJwt from "../../parseJwt";
 
 const Signin = () => {
   const [auth, updateAuth] = useAuth();
@@ -42,10 +43,13 @@ const Signin = () => {
         const token = response.headers["access_token"];
         localStorage.setItem("token", token);
         // Update auth context state
+        const userToken = parseJwt(response.headers["access_token"]);
+
         updateAuth({
+          userId: userToken.email,
           token: token,
-          username: "",
-          role: "",
+          username: userToken.username || "", 
+          role: userToken.authorities || "",
         });
         setTimeout(() => {
           setUser(null);
@@ -71,33 +75,47 @@ const Signin = () => {
     event.preventDefault();
 
     try {
-      delete axios.defaults.headers.common["Authorization"];
-      const response = await axios
-        .post("http://localhost:8081/api/v1/user/signIn", user, {
+      const response = await axios.post(
+        "http://localhost:8081/api/v1/user/signIn",
+        user,
+        {
           headers: {
             "Content-Type": "application/json",
           },
-        })
-        .catch((err) => err);
+        }
+      );
 
       if (response.status === 200) {
-        console.log(response);
-        toast.success("Logged in Successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        const token = response.headers["access_token"];
-        localStorage.setItem("token", token);
-        // Update auth context state
+        localStorage.setItem("token", response.headers["access_token"]);
+        const userToken = parseJwt(response.headers["access_token"]);
+
         updateAuth({
-          token: token,
-          username: "",
-          role: "",
+          userId: userToken.email,
+          token: response.headers["access_token"],
+          username: userToken.username || "", 
+          role: userToken.authorities || "",
         });
-        setTimeout(() => {
-          setUser(null);
-          navigate("/");
-        }, 3000);
+        if (userToken?.authorities === "admin") {
+          toast.success("Admin Logged in Successfully.", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+          setTimeout(() => {
+            setUser(null);
+            navigate("/admin");
+            window.location.reload();
+          }, 3000); 
+        } else {
+          toast.success("Logged in Successfully.", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+
+          setTimeout(() => {
+            setUser(null);
+            navigate("/");
+          }, 3000);
+        }
       } else if (response.status === 401) {
         toast.warning("Enter valid Credentials...!", {
           position: "top-right",
@@ -106,12 +124,13 @@ const Signin = () => {
       }
     } catch (error) {
       // Handle server or network errors
-      if (error.response && error.response.status === 401) {
+      console.log(error);
+      if (error.response && error.response.status === 400) {
         toast.error("Enter valid Credentials...!", {
           position: "top-right",
           autoClose: 3000,
         });
-      } else {
+      } else if (error.code == "ERR_NETWORK") {
         toast.warning("Internal server error..! Try again later", {
           position: "top-right",
           autoClose: 3000,
@@ -158,11 +177,6 @@ const Signin = () => {
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
-                {/* Checkbox */}
-                {/* <div className="form-check d-flex justify-content-start mb-4"> */}
-
-                {/* </div> */}
-                {/* Full-width button */}
                 <div className="d-grid mb-4">
                   <button
                     className="btn btn-primary btn-md w-100"
@@ -187,31 +201,18 @@ const Signin = () => {
                 </div>
                 {/* Full-width buttons */}
                 <div className="row">
-                  <div className="col">
-                    <div className="d-grid mb-2">
-                      <button
-                        className="btn btn-md w-100"
-                        style={{ backgroundColor: "#dd4b39" }}
-                        onClick={() => googleLogin()}
-                      >
-                        <i className="fab fa-google me-2" /> Sign in with Google
-                      </button>
-                      {/* <GoogleLogin
+                  <div className="d-grid mb-2">
+                    <button
+                      className="btn btn-md w-100"
+                      style={{ backgroundColor: "#dd4b39" }}
+                      onClick={() => googleLogin()}
+                    >
+                      <i className="bi bi-google me-2" /> Sign in with Google
+                    </button>
+                    {/* <GoogleLogin
                         onSuccess={responseMessage}
                         onError={errorMessage}
                       /> */}
-                    </div>
-                  </div>
-                  <div className="col">
-                    <button
-                      className="btn btn-md w-100"
-                      style={{ backgroundColor: "#3b5998" }}
-                      type="submit"
-                      onClick={() => console.log("Facebook")}
-                    >
-                      <i className="fab fa-facebook-f me-2" /> Sign in with
-                      Facebook
-                    </button>
                   </div>
                 </div>
                 <div className="d-grid"></div>

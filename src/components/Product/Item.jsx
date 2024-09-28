@@ -7,28 +7,25 @@ const Item = ({ product }) => {
 
   const { id,name, quantity, price, brand, productImage } = product;
   
-  const [orderData, setOrderData] = useState({
+  const [orderData, setOrderData] = useState([{
     quantity : 1,
     price : price,
     productId : id
-  });
+  }]);
 
   const handleChange = (event) => {
     setOrderData( (prevData) => ({...prevData, 
                                 price : event.target.value * price,
                                 quantity : event.target.value}));
   };
-
-  console.log(orderData);
-
   return (
     <div className="container">
       <div className="card" style={{ width: "18rem" }}>
         <div className="m-3 ms-auto">
-          <Favourite />
+          <Favourite id={id}/>
         </div>
         <img
-          src="fertilizer.webp"
+          src={productImage}
           className="img-fluid rounded mx-auto d-block w-50 p-2"
           alt={name}
         />
@@ -60,7 +57,7 @@ const Item = ({ product }) => {
               <CartButton data={orderData}/>
             </div>
             <div className="col-md d-grid gap-2">
-              <OrderButton data={orderData}/>
+              <OrderButton data={orderData} price={price}/>
             </div>
           </div>
         </div>
