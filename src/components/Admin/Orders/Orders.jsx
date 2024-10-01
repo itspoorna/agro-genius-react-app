@@ -53,13 +53,13 @@ const Orders = () => {
                     <b>{order?.id}</b>
                   </th>
                   <td>
-                    <div
-                      className={`tm-status-circle ${order.status.toLowerCase()}`}
-                    ></div>
-                    {order?.orderStatus}
+                    <b>{order?.userName}</b>
                   </td>
                   <td>
-                    <b>{order?.userName}</b>
+                    <div
+                      // className={`tm-status-circle ${order.status.toLowerCase()}`}
+                    ></div>
+                    {order?.orderStatus}
                   </td>
                   <td>
                     <b>{order?.amount}</b>
@@ -68,7 +68,7 @@ const Orders = () => {
                     <b>{order?.city}</b>
                   </td>
                   <td>{order?.startDate}</td>
-                  <td>{order?.estimatedDelivery}</td>
+                  <td>{order?.estimatedDelivery || " "}</td>
                 </tr>
               ))}
           </tbody>

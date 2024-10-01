@@ -71,11 +71,11 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
           </Link>
         </li>
 
-        {/* <li className="sidebar-list-item">
-          <Link to="/admin/feedback">
-            <BsFillGrid3X3GapFill className="icon" /> Feedback
+        <li className="sidebar-list-item">
+          <Link to="queries">
+            <BsFillGrid3X3GapFill className="icon" /> Queries
           </Link>
-        </li> */}
+        </li>
 
         <li className="sidebar-list-item">
           <Link onClick={handleLogout}>

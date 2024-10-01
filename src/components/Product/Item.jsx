@@ -31,10 +31,10 @@ const Item = ({ product }) => {
         />
         <div className="card-body p-3">
           <h5 className="card-title text-center">{name}</h5>
-          <p className="card-text">{brand}</p>
-          <p className="card-text">₹{price}</p>
+          <p className="card-text"><b>Brand: {brand}</b></p>
+          <p className="card-text"><b>Price: ₹{price}</b></p>
           <p className="card-text">
-            <i className="fa fa-percent" aria-hidden="true" /> Saved Price ₹467
+            {/* <i className="fa fa-percent" aria-hidden="true" /> Saved Price ₹467 */}
           </p>
           <div className="row align-items-center">
             <div className="col-4 text-center">

@@ -28,6 +28,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AdminRoute from "./routes/AdminRoute";
 import Unauthorized from "./pages/Unauthorized";
 import { ToastContainer } from "react-toastify";
+import GetQueries from "./components/Admin/GetQueries/GetQueries";
 
 const App = () => {
   return (
@@ -56,7 +57,7 @@ const App = () => {
               <Route index element={<Profile />} />
               <Route path="report" element={<Reports />} />
               <Route path="orders" element={<Orders />} />
-              <Route path="feedback" element={<Feedback />} />
+              <Route path="queries" element={<GetQueries />} />
               <Route path="users" element={<Users />} />
               <Route path="products" element={<ProductPage />} />
               <Route path="add-product" element={<AddProductForm />} />

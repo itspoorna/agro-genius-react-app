@@ -91,10 +91,10 @@ const Signup = () => {
       console.error("Error uploading file:", error);
     }
   };
- 
+
   const emailVerify = async () => {
     console.log(form.checkValidity());
-    if(validate()){
+    if (validate()) {
       console.log("validated");
     }
     if (user.password !== confirmPassword) {
@@ -108,7 +108,9 @@ const Signup = () => {
           .catch(() =>
             toast.warning("Internal server error while generating otp")
           );
-        console.log(response.data);
+        if (response) {
+          toast.success(response.data);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -314,16 +316,13 @@ const Signup = () => {
                     setConfirmPassword(e.target.value);
                     if (user?.password !== e.target.value) {
                       setError("Passwords do not match");
-                    }else{
+                    } else {
                       setError(false);
                     }
-                
                   }}
                   required
                 />
-                {errors && (
-                <p className="text-danger">{errors}</p>
-                )}
+                {errors && <p className="text-danger">{errors}</p>}
               </div>
               <div className="col-md-10 offset-md-1">
                 {user?.password.length > 0 && (
